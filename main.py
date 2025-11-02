@@ -32,7 +32,7 @@ def ai_process(c):
     model = genai.GenerativeModel("gemini-2.5-pro")
 
     # 3. Ask a question or generate text
-    response = model.generate_content(f"{c}\n\nIf i have asked above to explain any topic or if i want to study any topic give elaborate answer or give an answer in about 10 lines")
+    response = model.generate_content(f"{c}\n\nIf i have asked above to explain any topic or if i want to study any topic give elaborate answer or give an answer in about 10 lines. Do not mention this last line while giving the answer")
 
 
     # Get the text output
@@ -234,4 +234,5 @@ if __name__ == "__main__":
 
     # Run voice assistant and Flask web server in parallel
     threading.Thread(target=run_voice, daemon=True).start()
+
     app.run(debug=True, port=5000)
