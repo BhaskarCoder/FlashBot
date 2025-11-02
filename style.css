@@ -1,0 +1,354 @@
+/* =========================
+   GLOBAL STYLE
+========================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+body {
+  font-family: 'Inter', 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #0a0a0a, #050505);
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  letter-spacing: 0.2px;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  top: -80px;
+  left: -80px;
+  background: radial-gradient(circle, rgba(0,212,255,0.08), transparent 70%);
+  filter: blur(50px);
+  z-index: 0;
+}
+
+
+
+/* =========================
+   CONTAINER CARD
+========================= */
+.container {
+  width: 450px;
+  background: linear-gradient(145deg, #111, #0b0b0b);
+  border-radius: 20px;
+  padding: 30px 25px;
+  box-shadow: 0 0 40px rgba(0, 150, 255, 0.2);
+  border: 1px solid rgba(0, 150, 255, 0.2);
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  max-height: 90vh;         /* ✅ prevents overflow from going beyond screen */
+  overflow-y: auto;         /* ✅ scrolls inside container if content too long */
+}
+
+
+
+.container:hover {
+  box-shadow: 0 0 50px rgba(0, 150, 255, 0.35);
+  transform: scale(1.02);
+}
+
+/* =========================
+   HEADER / LOGO
+========================= */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo img {
+  height: 42px;
+  width: 42px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 200, 255, 0.3);
+}
+
+.logo span {
+  font-size: 26px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #00d4ff, #0095ff);
+  background-clip: text;              /* ✅ Standard property for all browsers */
+  -webkit-background-clip: text;      /* ✅ For Safari & Chrome */
+  -webkit-text-fill-color: transparent;
+  color: transparent;                 /* ✅ Ensures proper fallback */
+  letter-spacing: 1px;
+}
+
+
+.upgrade {
+  background: linear-gradient(90deg, #0095ff, #00d4ff);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.upgrade:hover {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #00d4ff, #0077ff);
+}
+
+/* =========================
+   TITLE / TAGLINE
+========================= */
+.title {
+  text-align: center;
+  margin: 30px 0 15px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #00d4ff;
+}
+
+.subtitle {
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+.subject-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.chip {
+  background: rgba(0, 200, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 20px;
+  color: #00d4ff;
+  font-size: 13px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.chip:hover {
+  background: linear-gradient(90deg, #00d4ff33, #0077ff33);
+  transform: translateY(-2px);
+}
+
+.chip.active {
+  background: linear-gradient(90deg, #00d4ff, #0077ff);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 150, 255, 0.4);
+}
+
+
+/* =========================
+   INPUT BOX
+========================= */
+.input-box {
+  display: flex;
+  align-items: center;
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 10px 14px;
+  gap: 10px;
+  border: 1px solid rgba(0, 255, 255, 0.1);
+  transition: border-color 0.3s;
+}
+
+.input-box:focus-within {
+  border-color: #00d4ff;
+  box-shadow: 0 0 15px rgba(0, 200, 255, 0.2);
+}
+
+.input-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 16px;
+}
+
+.plus {
+  font-size: 20px;
+  color: #00d4ff;
+  cursor: pointer;
+}
+
+.icons {
+  display: flex;
+  gap: 8px;
+}
+
+.mic, .wave {
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.mic:hover, .wave:hover {
+  color: #00d4ff;
+  transform: scale(1.1);
+}
+.mic.listening {
+  animation: pulse 1.2s infinite;
+  color: #00d4ff;
+  text-shadow: 0 0 10px #00d4ff;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* =========================
+   RESPONSE BOX
+========================= */
+.response {
+  position: relative;
+  background: linear-gradient(180deg, #121212 0%, #0b0b0b 100%);
+  margin-top: 25px;
+  padding: 20px 18px 20px 45px; /* added left padding for icon */
+  border-radius: 14px;
+  color: #f1f1f1;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  box-shadow: 0 0 25px rgba(0, 212, 255, 0.1);
+  border-left: 4px solid #00d4ff;
+  animation: fadeIn 0.3s ease-in-out;
+  white-space: pre-wrap;
+}
+
+.response::before {
+  content: "💡";
+  position: absolute;
+  left: 14px;
+  top: 18px; /* moved slightly down */
+  font-size: 22px;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 3px #00d4ff55);
+}
+.response strong,
+.response b {
+  color: #00d4ff;
+  font-weight: 600;
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.response p {
+  margin: 8px 0;
+}
+
+.response ul, .response ol {
+  margin-left: 20px;
+  padding-left: 10px;
+}
+
+.response li {
+  margin: 5px 0;
+  line-height: 1.5;
+}
+
+
+/* =========================
+   EDUCATIONAL BADGE
+========================= */
+.education-badge {
+  text-align: center;
+  margin-top: 15px;
+  color: #00d4ff;
+  font-size: 13px;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+.education-badge::before {
+  content: "🎓 ";
+}
+.response img {
+  border-radius: 10px;
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  box-shadow: 0 0 20px rgba(0, 200, 255, 0.15);
+  margin-top: 10px;
+}
+
+/* =========================
+   SCROLLBAR STYLING
+========================= */
+.container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: #111;
+  border-radius: 10px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00d4ff, #0077ff);
+  border-radius: 10px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #00ffff, #0077ff);
+}
+.thinking {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.thinking span {
+  width: 8px;
+  height: 8px;
+  background: #00d4ff;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: bounce 1s infinite ease-in-out;
+}
+
+.thinking span:nth-child(2) { animation-delay: 0.2s; }
+.thinking span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.3; }
+  50% { transform: translateY(-6px); opacity: 1; }
+}
+.response {
+  position: relative;
+  background: linear-gradient(180deg, #111 0%, #0a0a0a 100%);
+  border-left: 4px solid #00d4ff;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+  transition: 0.3s;
+}
+
+.response::before {
+  content: "💡";
+  position: absolute;
+  left: -18px;
+  top: 12px;
+  font-size: 16px;
+  opacity: 0.7;
+}

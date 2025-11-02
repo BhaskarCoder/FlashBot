@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FLASH UI Clone</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <img src="https://yt3.googleusercontent.com/ytc/AIdro_n1Oqtzn88hyALb_2S9TorqTOZ-Yu_lRok6pcrQAGRi1Q=s900-c-k-c0x00ffffff-no-rj" alt="FLASH Logo" />
+        <span>FLASH</span>
+      </div>
+      <button class="upgrade">Upgrade to Go</button>
+    </header>
+
+    <main>
+      <h2 class="title">Hey Learner 👋 What do you want to explore today?</h2>
+      <p class="subtitle">Ask questions from any subject — Math, Science, Geography, or General Knowledge — and I’ll explain it clearly with examples!</p>
+      
+
+      <div class="input-box">
+        <span class="plus">+</span>
+        <input type="text" placeholder="Ask anything" />
+        <div class="icons">
+          <span class="mic">🎤</span>
+          <span class="wave">⎋</span>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+const input = document.querySelector(".input-box input");
+const container = document.querySelector(".container");
+const mic = document.querySelector(".mic");
+const plus = document.querySelector(".plus");
+
+// ===============================
+// TEXT INPUT HANDLER
+// ===============================
+input.addEventListener("keypress", async (e) => {
+  if (e.key === "Enter") {
+    const prompt = input.value.trim();
+    if (!prompt) return;
+
+    const resBox = document.createElement("div");
+    resBox.className = "response";
+    resBox.innerText = "FLASH is thinking...";
+    resBox.innerHTML = '<div class="thinking"><span></span><span></span><span></span></div>';
+
+    container.appendChild(resBox);
+
+    try {
+      const res = await fetch("http://127.0.0.1:5000/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
+      const data = await res.json();
+
+      if (data.response) {
+        resBox.innerText = data.response;
+      } else if (data.image) {
+        const img = document.createElement("img");
+        img.src = "data:image/png;base64," + data.image;
+        img.style.width = "300px";
+        img.style.display = "block";
+        img.style.margin = "10px auto";
+        resBox.innerText = "";
+        resBox.appendChild(img);
+      } else {
+        resBox.innerText = "Error: " + data.error;
+      }
+    } catch (err) {
+      resBox.innerText = "Server not reachable. Make sure main.py is running.";
+    }
+
+    input.value = "";
+  }
+});
+
+// ===============================
+// MIC (VOICE MODE) HANDLER
+// ===============================
+mic.addEventListener("click", async () => {
+  const resBox = document.createElement("div");
+  resBox.className = "response";
+  resBox.innerText = "🎤 Listening...";
+  container.appendChild(resBox);
+
+  try {
+    const res = await fetch("http://127.0.0.1:5000/voice", { method: "POST" });
+    const data = await res.json();
+
+    if (data.response) {
+      resBox.innerText = `🗣️ You said: ${data.input}\n\n💬 Flash: ${data.response}`;
+    } else {
+      resBox.innerText = "Could not process audio input.";
+    }
+  } catch (err) {
+    resBox.innerText = "Voice mode error: " + err.message;
+  }
+});
+
+// ===============================
+// IMAGE UPLOAD HANDLER (PLUS ICON)
+// ===============================
+plus.addEventListener("click", () => {
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = "image/*";
+
+  fileInput.onchange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const resBox = document.createElement("div");
+    resBox.className = "response";
+    resBox.innerText = "📸 Uploading image...";
+    container.appendChild(resBox);
+
+    try {
+      const res = await fetch("http://127.0.0.1:5000/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (data.response) {
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        img.style.width = "300px";
+        img.style.display = "block";
+        img.style.margin = "10px auto";
+        resBox.innerHTML = "";
+        resBox.appendChild(img);
+
+        const text = document.createElement("p");
+        text.innerText = "📖 Flash says: " + data.response;
+        text.style.marginTop = "10px";
+        resBox.appendChild(text);
+      } else {
+        resBox.innerText = "Error: " + data.error;
+      }
+    } catch (err) {
+      resBox.innerText = "Upload failed: " + err.message;
+    }
+  };
+
+  fileInput.click();
+});
+// SUBJECT CHIP HANDLER
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const topic = chip.dataset.topic;
+    input.value = `Explain a simple ${topic} concept with examples.`;
+    input.focus();
+    chip.classList.add("active");
+    setTimeout(() => chip.classList.remove("active"), 500);
+  });
+});
+function autoScroll() {
+  container.scrollTop = container.scrollHeight;
+}
+const observer = new MutationObserver(autoScroll);
+observer.observe(container, { childList: true });
+
+</script>
+
+
+</body>
+</html>
